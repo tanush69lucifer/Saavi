@@ -15,10 +15,10 @@ Join us as we embark on our journey towards the neural frontier.
 
 <div align="center">
 
-| SĀVI  ZING |
-
-<img width="550" src="https://github.com/user-attachments/assets/fcc25856-0306-4052-a46a-c6b5e7e9b39d" /> | <img width="350" src="https://github.com/user-attachments/assets/7b0d2b0d-44d8-4f6a-a49b-e35117fcc138" /> 
- **The Watchful Big Sister**  **The Articulate Bridge** 
+| SĀVI | ZING |
+| :---: | :---: |
+| <img width="550" src="https://github.com/user-attachments/assets/fcc25856-0306-4052-a46a-c6b5e7e9b39d" /> | <img width="350" src="https://github.com/user-attachments/assets/7b0d2b0d-44d8-4f6a-a49b-e35117fcc138" /> |
+| **The Watchful Big Sister** | **The Articulate Bridge** |
 
 </div>
 
