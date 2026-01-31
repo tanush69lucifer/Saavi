@@ -1,5 +1,5 @@
 SĀVI
-<img width="539" height="302" alt="logo" src="https://github.com/user-attachments/assets/dbd4f731-dd6f-4af1-bb61-7be96c16beab" />
+<img width="200" height="302" alt="logo" src="https://github.com/user-attachments/assets/dbd4f731-dd6f-4af1-bb61-7be96c16beab" />
 
 
 
