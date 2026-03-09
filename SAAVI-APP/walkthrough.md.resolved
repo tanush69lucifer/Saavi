@@ -1,0 +1,41 @@
+# Neuro Band - Backend & Hardware Integration Walkthrough
+
+The backend, hardware firmware, and Flutter application communication layers have been fully integrated. 
+
+## Completed Integration Flow
+1. **ESP32 S3 (MicroPython)**: Advertises a Bluetooth LE (BLE) GATT server (`NeuroBand_ESP32`). It sends a continuous little-endian 4-byte float signal representing real-time neuro-activity (e.g., simulating values between 0.4 and 0.6).
+2. **Flutter App ([BleService](file:///e:/Neuro/neuro_band/lib/services/ble_service.dart#7-109))**: Scans for the `NeuroBand_ESP32`, automatically pairs with it, requests Location/Bluetooth permissions, and subscribes to the BLE characteristic to decode the float signal in real-time.
+3. **Flutter App ([ApiService](file:///e:/Neuro/neuro_band/lib/services/api_service.dart#6-83))**: Monitors those incoming signals. If a signal crosses the "normal" threshold, it connects to the new Python backend to upload the signal using standard HTTP requests.
+4. **Python Backend (FastAPI)**: Receives the signal payload and stores it securely in a local `SQLite` database via SQLAlchemy.
+
+## Code Changes
+
+### Backend & Firmware (`e:\Neuro`)
+- `backend/main.py`: **[NEW]** FastAPI endpoints for auth and signal upload.
+- `backend/database.py`: **[NEW]** SQLAlchemy database schemas.
+- `firmware/main.py`: **[NEW]** MicroPython script setting up the active BLE GATT Server and advertising payloads.
+
+### Flutter App (`e:\Neuro\neuro_band`)
+- `pubspec.yaml`: **[MODIFIED]** Added `flutter_blue_plus`, `permission_handler`, and `http` dependencies.
+- `android/app/src/main/AndroidManifest.xml`: **[MODIFIED]** Added required `BLUETOOTH`, `BLUETOOTH_CONNECT`, `BLUETOOTH_SCAN`, `LOCATION`, and `INTERNET` permissions for Android 12+ and earlier versions.
+- `ios/Runner/Info.plist`: **[MODIFIED]** Added required `NSBluetoothAlwaysUsageDescription` properties.
+- `lib/services/api_service.dart`: **[NEW]** Class wrapping the HTTP calls for authentication and signal uploads.
+- `lib/services/ble_service.dart`: **[NEW]** Class handling BLE permissions, device scanning, decoding, and connection lifecycle.
+- `lib/data/mock_services.dart`: **[MODIFIED]** Refactored existing mocked logic to inject and use `BleService` streams and `ApiService` backend calls behind the scenes.
+
+## Running the Architecture
+All linting and analyzer checks show `No issues found!`.
+
+**1. Run Backend Server:** 
+Since the virtual environment dependencies need user installation, make sure you activate it and run uvicorn:
+```powershell
+cd e:\Neuro\backend
+.\.venv\Scripts\Activate.ps1
+uvicorn main:app --reload
+```
+
+**2. Flash Firmware:**
+Flash the `firmware/boot.py` and `firmware/main.py` onto your ESP32 S3 board using Thonny or mpremote.
+
+**3. Run Flutter App:**
+Run on an Android device, iOS device, or emulator. Upon logging in as a patient, it will immediately look for the ESP32 and communicate with the backend!
